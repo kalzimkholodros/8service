@@ -8,30 +8,74 @@ This project represents a modern e-commerce platform developed with a microservi
 
 ```mermaid
 graph TD
-    A[API Gateway] --> B[Auth Service]
-    A --> C[Product Service]
-    A --> D[Basket Service]
-    A --> E[Order Service]
-    A --> F[Payment Service]
-    A --> G[Review Service]
-    A --> H[Notification Service]
-    A --> I[Inventory Service]
-    
-    D --> J[PostgreSQL]
-    E --> J
-    F --> J
-    G --> J
-    H --> J
-    I --> J
-    
-    D --> K[RabbitMQ]
-    E --> K
-    F --> K
-    G --> K
-    H --> K
-    I --> K
-    
-    D --> L[Redis]
+    subgraph Client
+        A[Web Client]
+        B[Mobile Client]
+    end
+
+    subgraph API Gateway
+        C[Ocelot Gateway]
+    end
+
+    subgraph Services
+        D[Auth Service]
+        E[Product Service]
+        F[Basket Service]
+        G[Order Service]
+        H[Payment Service]
+        I[Review Service]
+        J[Notification Service]
+        K[Inventory Service]
+    end
+
+    subgraph Data Layer
+        L[PostgreSQL]
+        M[Redis]
+        N[RabbitMQ]
+    end
+
+    %% Client to Gateway
+    A -->|REST API| C
+    B -->|REST API| C
+
+    %% Gateway to Services
+    C -->|JWT Auth| D
+    C -->|REST API| E
+    C -->|REST API| F
+    C -->|REST API| G
+    C -->|REST API| H
+    C -->|REST API| I
+    C -->|REST API| J
+    C -->|REST API| K
+
+    %% Service to Service Communication
+    F -->|REST API| E
+    G -->|REST API| F
+    G -->|REST API| H
+    G -->|REST API| K
+    I -->|REST API| E
+    J -->|Event| N
+
+    %% Services to Data Layer
+    D -->|CRUD| L
+    E -->|CRUD| L
+    F -->|Cache| M
+    G -->|CRUD| L
+    H -->|CRUD| L
+    I -->|CRUD| L
+    J -->|CRUD| L
+    K -->|CRUD| L
+
+    %% Event Communication
+    G -->|OrderCreated| N
+    H -->|PaymentProcessed| N
+    K -->|StockUpdated| N
+    N -->|Notify| J
+
+    style Client fill:#f9f,stroke:#333,stroke-width:2px
+    style API Gateway fill:#bbf,stroke:#333,stroke-width:2px
+    style Services fill:#bfb,stroke:#333,stroke-width:2px
+    style Data Layer fill:#fbb,stroke:#333,stroke-width:2px
 ```
 
 ## 🛠️ Technologies
