@@ -72,12 +72,11 @@ graph TD
     K -->|StockUpdated| N
     N -->|Notify| J
 
-    style Client fill:#f9f,stroke:#333,stroke-width:2px
-    style API Gateway fill:#bbf,stroke:#333,stroke-width:2px
-    style Services fill:#bfb,stroke:#333,stroke-width:2px
-    style Data Layer fill:#fbb,stroke:#333,stroke-width:2px
+    style Client fill:#2c003e,stroke:#fff,stroke-width:2px,color:#fff
+    style API Gateway fill:#4a148c,stroke:#fff,stroke-width:2px,color:#fff
+    style Services fill:#1a237e,stroke:#fff,stroke-width:2px,color:#fff
+    style Data Layer fill:#311b92,stroke:#fff,stroke-width:2px,color:#fff
 ```
-
 ## 🛠️ Technologies
 
 - **Backend**: .NET Core
